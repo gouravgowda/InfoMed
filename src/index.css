@@ -1,16 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-primary-50: #f0f9ff;
-  --color-primary-100: #e0f2fe;
-  --color-primary-200: #bae6fd;
-  --color-primary-300: #7dd3fc;
-  --color-primary-400: #38bdf8;
-  --color-primary-500: #0ea5e9;
-  --color-primary-600: #0284c7;
-  --color-primary-700: #0369a1;
-  --color-primary-800: #075985;
-  --color-primary-900: #0c4a6e;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Outfit', system-ui, sans-serif;
+
+  --color-primary-50: #f0fdfa;
+  --color-primary-100: #ccfbf1;
+  --color-primary-200: #99f6e4;
+  --color-primary-300: #5eead4;
+  --color-primary-400: #2dd4bf;
+  --color-primary-500: #14b8a6;
+  --color-primary-600: #0d9488;
+  --color-primary-700: #0f766e;
+  --color-primary-800: #115e59;
+  --color-primary-900: #134e4a;
+  --color-primary-950: #042f2e;
+
+  --color-accent-50: #f0f9ff;
+  --color-accent-500: #0ea5e9;
+  --color-accent-600: #0284c7;
+
+  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  --shadow-glow: 0 0 15px rgba(20, 184, 166, 0.3);
+  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
 }
 
 @layer base {
@@ -18,25 +31,77 @@
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    @apply bg-slate-50 text-slate-900 font-sans;
+    @apply bg-slate-50 text-slate-900 font-sans selection:bg-primary-200 selection:text-primary-900;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display tracking-tight text-slate-900;
   }
 }
 
 @layer components {
+
+  /* Glassmorphism Utilities */
   .glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/20;
+    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-sm supports-[backdrop-filter]:bg-white/60;
   }
 
-  .soft-gradient {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  .glass-dark {
+    @apply bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 shadow-xl supports-[backdrop-filter]:bg-slate-900/70;
   }
 
-  .card-hover {
-    @apply transition-all duration-500 ease-out hover:-translate-y-2;
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-sm supports-[backdrop-filter]:bg-white/60 rounded-[2rem] hover:border-primary-200/50 transition-all duration-300 ease-out;
+  }
+
+  .glass-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Neo-Brutalism / Modern Cards */
+  .neo-card {
+    @apply bg-white border border-slate-100 rounded-[2rem] transition-all duration-300;
+    box-shadow: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04);
+  }
+
+  .neo-card:hover {
+    box-shadow: 0 8px 30px rgb(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+  }
+
+  /* Gradient Text */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-primary-700 to-primary-500;
+  }
+
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-accent-500;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply relative overflow-hidden bg-slate-900 text-white px-8 py-3.5 rounded-2xl font-bold font-display tracking-wide hover:bg-slate-800 transition-all duration-300;
+  }
+
+  .btn-primary:active {
+    transform: scale(0.95);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(20, 184, 166, 0.2);
+  }
+
+  .btn-glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-sm supports-[backdrop-filter]:bg-white/60 px-6 py-3 rounded-2xl font-bold text-slate-700 hover:text-primary-600 hover:bg-white/90 transition-all active:scale-95;
   }
 }
 
-/* Custom Animations */
+/* Animations */
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -49,26 +114,130 @@
   }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.4);
+  }
+
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 20px 10px rgba(20, 184, 166, 0);
+  }
+}
+
 .animate-fade-up {
   animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Custom Scrollbar */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* HUD & Scanning Animations */
+@keyframes scan-line {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes sound-wave {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes hud-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-scan-line {
+  animation: scan-line 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-sound-wave {
+  animation: sound-wave 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.animate-hud-spin {
+  animation: hud-spin 10s linear infinite;
+}
+
+/* Digital Grid Background */
+.bg-grid-pattern {
+  background-image:
+    linear-gradient(to right, rgba(20, 184, 166, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 184, 166, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-slate-50;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 rounded-full border-4 border-slate-50 hover:bg-slate-300 transition-colors;
-}
-
-/* Responsive fixes */
-@media (max-width: 640px) {
-  h1 {
-    @apply !leading-[1.1];
-  }
+  @apply bg-slate-200/80 rounded-full hover:bg-slate-300;
 }
